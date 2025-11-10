@@ -11,7 +11,7 @@ Deal Tracker is a full-stack web application to manage, track, and monitor busin
 ## Technology Stack
 - Backend: Java Spring Boot
 - Database: MySQL / PostgreSQL
-- Frontend: HTML, CSS, JavaScript
+- Frontend: React.js
 - Authentication: JWT (JSON Web Tokens)
 
 ## Installation
