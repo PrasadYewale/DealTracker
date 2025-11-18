@@ -2,6 +2,7 @@ package com.dealtracker.backend.service;
 import com.dealtracker.backend.models.User;
 import com.dealtracker.backend.repository.userRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,9 @@ public class UserService {
     @Autowired
     private userRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     public UserService(userRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -20,6 +24,7 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

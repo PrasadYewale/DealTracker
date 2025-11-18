@@ -3,9 +3,10 @@ package com.dealtracker.backend.controller;
 import com.dealtracker.backend.models.User;
 import com.dealtracker.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,27 +17,30 @@ public class TestController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUserById(id).orElse(null);
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        Optional<User> user = userService.getUserById(id);
+        return user.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.saveUser(user));
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        return ResponseEntity.ok(userService.updateUser(id, user));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok("User Deleted Successfully");
     }
 }
